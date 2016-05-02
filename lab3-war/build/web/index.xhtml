@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>ANIMAL_STORAGE</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h1><h:outputText value="ANIMALS"/></h1>
+            <h:dataTable value="#{storageController.readAllAnimals()}" var="item">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Kind"/>
+                    </f:facet>
+                    <h:outputText value="#{item.kind}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Name"/>
+                    </f:facet>
+                    <h:outputText value="#{item.name}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="CurrDish"/>
+                    </f:facet>
+                    <h:outputText value="#{item.currDish}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="MaxDish"/>
+                    </f:facet>
+                    <h:outputText value="#{item.maxDish}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Delete"/>
+                    </f:facet>
+                    <h:commandLink action="#{storageController.deleteAnimal(item)}" value="delete"/>
+                </h:column>
+            </h:dataTable>
+            <h:panelGrid columns="5">
+                <h:inputText value="#{storageController.animal.kind}" pt:placeholder="kind" title="kind"/>
+                <h:inputText value="#{storageController.animal.name}" pt:placeholder="name" title="name"/>
+                <h:inputText value="#{storageController.animal.currDish}" pt:placeholder="current dish" title="current dish"/>
+                <h:inputText value="#{storageController.animal.maxDish}" pt:placeholder="maximum dish" title="maximum dish"/>
+                <h:commandButton action="#{storageController.createAnimal()}" value="create"/>
+            </h:panelGrid>
+        </h:form>
+
+        <h:form>
+            <h1><h:outputText value="STORAGE"/></h1>
+            <h:dataTable value="#{storageController.readAllStorages()}" var="item">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Name"/>
+                    </f:facet>
+                    <h:outputText value="#{item.name}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="CountFood"/>
+                    </f:facet>
+                    <h:outputText value="#{item.countFood}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Delete"/>
+                    </f:facet>
+                    <h:commandLink action="#{storageController.deleteStorage(item)}" value="delete"/>
+                </h:column>
+            </h:dataTable>
+
+            <h:panelGrid columns="3">
+                <h:inputText value="#{storageController.storage.name}" pt:placeholder="name" title="name"/>
+                <h:inputText value="#{storageController.storage.countFood}" pt:placeholder="count food" title="count food"/>
+                <h:commandButton action="#{storageController.createStorage()}" value="create"/>
+            </h:panelGrid>
+        </h:form>
+        <h:form>
+            <h1><h:outputText value="FEED ANIMALS"/></h1>
+            <h:panelGrid columns="12">
+                <h:selectOneMenu value="#{storageController.idStorage}" title="from storage">
+                    <f:selectItems value="#{storageController.readAllStorages()}" var="storage" itemLabel="#{storage.name}" itemValue="#{storage.id}"/>
+                </h:selectOneMenu>
+
+                <h:inputText value="#{storageController.foodForAnimal}" pt:placeholder="food for animal" title="food for animal"/>
+
+                <h:selectOneMenu value="#{storageController.idAnimal}" title="for animal">
+                    <f:selectItems value="#{storageController.readAllAnimals()}" var="animal" itemLabel="#{animal.name}" itemValue="#{animal.id}"/>
+                </h:selectOneMenu>
+
+                <h:commandLink action="#{storageController.feedAnimal('feedAnimalOK')}" value="feed OK"/> | 
+                <h:commandLink action="#{storageController.feedAnimal('feedAnimalRollback')}" value="feed Rollback"/> | 
+                <h:commandLink action="#{storageController.feedAnimal('feedAnimalException')}" value="feed Exception"/> | 
+                <h:commandLink action="#{storageController.feedAnimal('feedAnimalWithoutTransaction')}" value="feed without transaction"/> | 
+                <h:commandLink action="#{storageController.feedAnimal('feedAnimalWithNewTransaction')}" value="feed with new transaction"/>
+            </h:panelGrid>
+        </h:form>
+    </h:body>
+</html>
+
